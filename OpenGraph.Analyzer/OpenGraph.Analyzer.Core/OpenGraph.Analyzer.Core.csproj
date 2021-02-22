@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="HtmlAgilityPack" Version="1.11.30" />
+      <ProjectReference Include="..\OpenGraph.Analyzer.Parser\OpenGraph.Analyzer.Parser.csproj" />
     </ItemGroup>
 
 </Project>

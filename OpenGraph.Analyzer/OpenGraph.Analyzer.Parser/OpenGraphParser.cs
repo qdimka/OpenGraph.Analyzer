@@ -27,12 +27,42 @@ namespace OpenGraph.Analyzer.Parser
                         .GetAttributeValue(PropertyAttribute, "");
                     var contentValue = x
                         .GetAttributeValue(ContentAttribute, "");
-
-                    return new OpenGraphMeta(propertyValue, contentValue);
+                    
+                    var prefix = SplitValue(propertyValue);
+                    
+                    return new OpenGraphMeta(prefix.Prefix, propertyValue, contentValue);
                 })
-                .ToDictionary(x => x.Name);
+                .GroupBy(x => x.Name)
+                .ToDictionary(x => x.Key, 
+                    x => x.ToArray());
 
-            return new OpenGraphMetaData(null, meta);
+            return new OpenGraphMetaData(GetNameSpace(htmlDocument), meta);
+        }
+
+        private OpenGraphNameSpace GetNameSpace(HtmlDocument htmlDocument)
+        {
+            var headNode = htmlDocument
+                .DocumentNode
+                .SelectSingleNode("//head");
+
+            if (!headNode.HasAttributes || headNode.Attributes.All(x => x.Name != "prefix"))
+                return null;
+
+            var prefix = SplitValue(headNode
+                .GetAttributeValue("prefix", ""));
+
+            return new OpenGraphNameSpace(prefix.Prefix, prefix.Value, new string[0]);
+        }
+
+        private (string Prefix, string Value) SplitValue(string attributeValue)
+        {
+            if (!attributeValue.Contains(":"))
+                return (null, attributeValue);
+
+            var splitted = attributeValue
+                .Split(':');
+
+            return (splitted[0], splitted[1]);
         }
     }
 }

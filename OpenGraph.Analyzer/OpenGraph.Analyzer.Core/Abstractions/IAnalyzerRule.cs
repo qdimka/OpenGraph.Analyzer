@@ -2,10 +2,8 @@ using System;
 
 namespace OpenGraph.Analyzer.Core.Abstractions
 {
-    public interface IAnalyzerRule
+    public interface IAnalyzerRule<in T>
     {
-        string Name { get; }
-
-        Func<string, bool> Rule();
+        bool Rule(T meta);
     }
 }
