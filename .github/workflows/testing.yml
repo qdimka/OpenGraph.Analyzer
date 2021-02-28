@@ -1,0 +1,37 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Environment.
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.101'
+    - name: Install sonar-scanner
+      shell: bash
+      run: |
+        dotnet tool install --global dotnet-sonarscanner
+    - name: Build and run tests.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        cd src/
+        dotnet sonarscanner begin /k:"qdimka_OpenGraph.Analyzer" /o:"qdimka" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="*Tests/coverage.xml"
+        dotnet build
+        dotnet test /p:AltCover="true" /p:CopyLocalLockFileAssemblies="true" /p:AltCoverAssemblyExcludeFilter=XUnit
+        dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
