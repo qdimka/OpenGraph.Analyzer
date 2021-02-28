@@ -14,9 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Environment.
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.101'
+      uses: actions/setup-dotnet@v1.7.2
     - name: Install sonar-scanner
       shell: bash
       run: |
