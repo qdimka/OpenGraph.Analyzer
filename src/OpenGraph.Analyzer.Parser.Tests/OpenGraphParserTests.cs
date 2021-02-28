@@ -1,12 +1,13 @@
 using System.IO;
 using System.Linq;
+using OpenGraph.Analyzer.Parser.NameSpaces;
 using Xunit;
 
 namespace OpenGraph.Analyzer.Parser.Tests
 {
     public class OpenGraphParserTests
     {
-        private readonly IOpenGraphParser _parser = new OpenGraphParser();
+        private readonly IOpenGraphParser _parser = new OpenGraphParser(new DefaultNameSpaceStore());
         
         [Fact]
         public void Parse_Should_Return_Empty_NameSpace_If_NameSpace_NotPresent()

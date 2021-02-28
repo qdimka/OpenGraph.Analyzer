@@ -1,13 +1,20 @@
 using System.Linq;
 using HtmlAgilityPack;
+using OpenGraph.Analyzer.Parser.NameSpaces;
 
 namespace OpenGraph.Analyzer.Parser
 {
     public class OpenGraphParser : IOpenGraphParser
     {
+        private readonly INameSpaceStore _store;
         private const string PropertyAttribute = "property";
         private const string ContentAttribute = "content";
 
+        public OpenGraphParser(INameSpaceStore store)
+        {
+            _store = store;
+        }
+        
         public IOpenGraphMetaData Parse(string html)
         {
             var htmlDocument = new HtmlDocument();
@@ -51,7 +58,8 @@ namespace OpenGraph.Analyzer.Parser
             var prefix = SplitValue(headNode
                 .GetAttributeValue("prefix", ""));
 
-            return new OpenGraphNameSpace(prefix.Prefix, prefix.Value, new string[0]);
+            var nameSpace = _store.Get(prefix.Prefix);
+            return nameSpace ?? new OpenGraphNameSpace(prefix.Prefix, prefix.Value, new string[0]);
         }
 
         private (string Prefix, string Value) SplitValue(string attributeValue)

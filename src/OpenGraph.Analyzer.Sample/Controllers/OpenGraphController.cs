@@ -18,7 +18,7 @@ namespace OpenGraph.Analyzer.Sample.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(OpenGraphRequest request)
+        public async Task<IActionResult> Get([FromQuery]OpenGraphRequest request)
         {
             var http = new HttpClient();
 

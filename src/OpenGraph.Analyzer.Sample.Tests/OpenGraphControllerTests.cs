@@ -16,9 +16,11 @@ namespace OpenGraph.Analyzer.Sample.Tests
         [Fact]
         public async Task Get()
         {
+            const string url = "https://sonarcloud.io/";
+            
             var client = _factory.CreateClient();
 
-            var response = await client.GetAsync("api/opengraph");
+            var response = await client.GetAsync($"api/opengraph?url={url}");
             
             Assert.True(response.IsSuccessStatusCode);
         }
