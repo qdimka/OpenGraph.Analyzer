@@ -1,15 +1,15 @@
 using System.Linq;
-using OpenGraph.Analyzer.Core.Abstractions;
+using OpenGraph.Analyzer.Core.Rules.Result;
 using OpenGraph.Analyzer.Parser;
 
 namespace OpenGraph.Analyzer.Core.Rules
 {
-    public class RequiredAttributesRule : AnalyzerRuleBase<IOpenGraphMetaData>
+    public class RequiredAttributesRule : AnalyzerRuleBase
     {
-        public override bool Rule(IOpenGraphMetaData meta)
+        public override IAnalyzerRuleResult Rule(IOpenGraphMetaData meta)
         {
             if (meta.NameSpace == null)
-                return false;
+                return DefaultAnalyzerRuleResult.Succeeded();
             
             var requiredAttributes = meta
                 .NameSpace
@@ -17,8 +17,14 @@ namespace OpenGraph.Analyzer.Core.Rules
                 .Select(x => $"{meta.NameSpace.Prefix}:{x}")
                 .ToArray();
 
-            return requiredAttributes
-                .All(x => meta.Meta.ContainsKey(x));
+            var errors = requiredAttributes
+                .Where(x => !meta.Meta.ContainsKey(x))
+                .Select(x => (IAnalyzerRuleError)new DefaultAnalyzerRuleError(x, "Required"))
+                .ToList();
+            
+            return errors.Any()
+                ? DefaultAnalyzerRuleResult.Failed(errors) 
+                : DefaultAnalyzerRuleResult.Succeeded();
         }
     }
 }

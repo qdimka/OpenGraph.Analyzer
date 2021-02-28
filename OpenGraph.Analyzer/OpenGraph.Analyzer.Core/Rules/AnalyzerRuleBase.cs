@@ -1,10 +1,13 @@
 using System;
-using OpenGraph.Analyzer.Core.Abstractions;
+using OpenGraph.Analyzer.Core.Rules.Result;
+using OpenGraph.Analyzer.Parser;
 
 namespace OpenGraph.Analyzer.Core.Rules
 {
-    public abstract class AnalyzerRuleBase<T> : IAnalyzerRule<T>
+    public abstract class AnalyzerRuleBase : IAnalyzerRule<IOpenGraphMetaData, IAnalyzerRuleResult>
     {
-        public abstract bool Rule(T meta);
+        public virtual string Key => "BaseRule";
+        
+        public abstract IAnalyzerRuleResult Rule(IOpenGraphMetaData meta);
     }
 }

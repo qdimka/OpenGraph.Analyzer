@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace OpenGraph.Analyzer.Core.Abstractions
+namespace OpenGraph.Analyzer.Core.Result
 {
     public interface IAnalyzerResult
     {

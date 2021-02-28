@@ -1,4 +1,4 @@
-namespace OpenGraph.Analyzer.Parser
+namespace OpenGraph.Analyzer.Parser.Store
 {
     public interface INameSpaceStore
     {

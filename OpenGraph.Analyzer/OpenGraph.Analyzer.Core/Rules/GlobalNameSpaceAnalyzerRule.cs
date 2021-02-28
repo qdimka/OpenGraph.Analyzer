@@ -1,12 +1,22 @@
 using System;
-using OpenGraph.Analyzer.Core.Abstractions;
+using System.Collections.Generic;
+using OpenGraph.Analyzer.Core.Rules.Result;
 using OpenGraph.Analyzer.Parser;
 
 namespace OpenGraph.Analyzer.Core.Rules
 {
-    public class GlobalNameSpaceAnalyzerRule : AnalyzerRuleBase<IOpenGraphMetaData>
+    public class RequiredGlobalNameSpaceRule : AnalyzerRuleBase
     {
-        public override bool Rule(IOpenGraphMetaData meta) 
-            => meta.NameSpace != null;
+        public override string Key => nameof(RequiredGlobalNameSpaceRule);
+
+        public override IAnalyzerRuleResult Rule(IOpenGraphMetaData meta)
+        {
+            return meta.NameSpace == null
+                ? DefaultAnalyzerRuleResult.Failed(new List<IAnalyzerRuleError>()
+                {
+                    new DefaultAnalyzerRuleError(nameof(RequiredGlobalNameSpaceRule), "RequiredGlobalNameSpaceRule")
+                })
+                : DefaultAnalyzerRuleResult.Succeeded();
+        }
     }
 }

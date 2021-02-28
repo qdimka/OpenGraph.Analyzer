@@ -1,7 +1,6 @@
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace OpenGraph.Analyzer.Parser
+namespace OpenGraph.Analyzer.Parser.Store
 {
     public class InMemoryNameSpaceStore : INameSpaceStore
     {
