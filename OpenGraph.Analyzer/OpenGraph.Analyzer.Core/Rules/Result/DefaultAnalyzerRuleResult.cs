@@ -11,7 +11,7 @@ namespace OpenGraph.Analyzer.Core.Rules.Result
         
         public List<IAnalyzerRuleError> Errors { get; private set; }
 
-        public bool Success => !Errors.Any();
+        public bool Success => Errors == null || !Errors.Any();
 
         public static DefaultAnalyzerRuleResult Failed(List<IAnalyzerRuleError> errors)
         {

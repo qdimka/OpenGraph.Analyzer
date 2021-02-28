@@ -6,7 +6,7 @@ namespace OpenGraph.Analyzer.Core.Result
 {
     public class OpenGraphResult : IAnalyzerResult
     {
-        public Dictionary<string, string> Rules { get; }
+        public (string Rule, string Result)[] Rules { get; set; }
 
         public bool IsOpenGraphPresent 
             => Rules == null || Rules.Any();

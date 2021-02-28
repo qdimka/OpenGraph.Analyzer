@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using OpenGraph.Analyzer.Core.Common;
 using OpenGraph.Analyzer.Core.Result;
 using OpenGraph.Analyzer.Core.Rules;
 using OpenGraph.Analyzer.Core.Rules.Registry;
@@ -13,6 +14,7 @@ namespace OpenGraph.Analyzer.Core.Services
     {
         private readonly IOpenGraphParser _openGraphParser;
         private readonly IRulesRegistry<IOpenGraphMetaData, IAnalyzerRuleResult> _rulesRegistry;
+        private readonly IErrorDescriber _errorDescriber;
 
         public OpenGraphAnalyzer(IOpenGraphParser openGraphParser, 
             IRulesRegistry<IOpenGraphMetaData, IAnalyzerRuleResult> rulesRegistry)
@@ -21,7 +23,7 @@ namespace OpenGraph.Analyzer.Core.Services
             _rulesRegistry = rulesRegistry;
         }
         
-        public Task<IAnalyzerResult> AnalyzeAsync(string html)
+        public IAnalyzerResult Analyze(string html)
         {
             if (string.IsNullOrEmpty(html))
                 throw new InvalidOperationException();
@@ -31,9 +33,15 @@ namespace OpenGraph.Analyzer.Core.Services
             var results = _rulesRegistry
                 .GetRules()
                 .Select(x => x.Rule(meta))
+                .ToArray()
+                .SelectMany(x => x.Errors)
+                .Select(x => (x.Key, x.Error))
                 .ToArray();
             
-            return null;
+            return new OpenGraphResult()
+            {
+                Rules = results
+            };
         }
     }
 }

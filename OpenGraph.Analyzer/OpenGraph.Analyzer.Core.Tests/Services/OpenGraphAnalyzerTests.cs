@@ -13,12 +13,12 @@ namespace OpenGraph.Analyzer.Core.Tests.Services
             new OpenGraphAnalyzer(new OpenGraphParser(), new DefaultRuleRegistry());
         
         [Fact]
-        public async Task AnalyzeAsync_Should_Throw_Error_For_EmptyOrNull_String()
+        public void AnalyzeAsync_Should_Throw_Error_For_EmptyOrNull_String()
         {
-            await Assert.ThrowsAsync<InvalidOperationException>(
-                () => _openGraphAnalyzer.AnalyzeAsync(""));
-            await Assert.ThrowsAsync<InvalidOperationException>(
-                () => _openGraphAnalyzer.AnalyzeAsync(null));
+            Assert.Throws<InvalidOperationException>(
+                () => _openGraphAnalyzer.Analyze(""));
+            Assert.Throws<InvalidOperationException>(
+                () => _openGraphAnalyzer.Analyze(null));
         }
     }
 }

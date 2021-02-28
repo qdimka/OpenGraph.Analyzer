@@ -5,6 +5,6 @@ namespace OpenGraph.Analyzer.Core.Services
 {
     public interface IOpenGraphAnalyzer
     {
-        Task<IAnalyzerResult> AnalyzeAsync(string html);
+        IAnalyzerResult Analyze(string html);
     }
 }
