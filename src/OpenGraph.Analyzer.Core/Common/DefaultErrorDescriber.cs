@@ -6,10 +6,10 @@ namespace OpenGraph.Analyzer.Core.Common
 {
     public class DefaultErrorDescriber : IErrorDescriber
     {
-        private Dictionary<string, string> _errors = new Dictionary<string, string>()
+        private readonly Dictionary<string, string> _errors = new Dictionary<string, string>()
         {
-            {nameof(RequiredGlobalNameSpaceRule), ""},
-            {nameof(RequiredAttributesRule), ""},
+            {nameof(RequiredGlobalNameSpaceRule), "Global namespace is required"},
+            {nameof(RequiredAttributesRule), "Attribute {0} is required for {1}"},
         };
         
         public string GetError(string key, params string[] args)

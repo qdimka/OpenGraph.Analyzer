@@ -23,7 +23,7 @@ namespace OpenGraph.Analyzer.Parser
 
     public class OpenGraphNameSpace
     {
-        public OpenGraphNameSpace(string prefix, string url, string[] required)
+        public OpenGraphNameSpace(string prefix, string url, params string[] required)
         {
             Prefix = prefix;
             Url = url;

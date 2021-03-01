@@ -7,7 +7,7 @@ namespace OpenGraph.Analyzer.Core.Rules
 {
     public class RequiredAttributesRule : AnalyzerRuleBase
     {
-        public override string Key => nameof(RequiredGlobalNameSpaceRule);
+        public override string Key => nameof(RequiredAttributesRule);
 
         public RequiredAttributesRule(IErrorDescriber errorDescriber) : base(errorDescriber)
         {
@@ -26,7 +26,8 @@ namespace OpenGraph.Analyzer.Core.Rules
 
             var errors = requiredAttributes
                 .Where(x => !meta.Meta.ContainsKey(x))
-                .Select(x => (IAnalyzerRuleError)new DefaultAnalyzerRuleError(x, "Required"))
+                .Select(x => 
+                    (IAnalyzerRuleError)new DefaultAnalyzerRuleError(x, Key, ErrorDescriber.GetError(Key, x, meta.NameSpace.Prefix)))
                 .ToList();
             
             return errors.Any()

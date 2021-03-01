@@ -2,12 +2,16 @@ namespace OpenGraph.Analyzer.Core.Rules.Result
 {
     public class DefaultAnalyzerRuleError : IAnalyzerRuleError
     {
-        public DefaultAnalyzerRuleError(string key, string error)
+        public DefaultAnalyzerRuleError(string attributeName, string key, string error)
         {
-            
+            AttributeName = attributeName;
+            RuleKey = key;
+            Error = error;
         }
         
-        public string Key { get; set; }
+        public string AttributeName { get; set; }
+        
+        public string RuleKey { get; set; }
         
         public string Error { get; set; }
     }

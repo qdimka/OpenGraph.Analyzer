@@ -5,12 +5,14 @@ namespace OpenGraph.Analyzer.Parser.NameSpaces
 {
     public class DefaultNameSpaceStore : INameSpaceStore
     {
-        private readonly Dictionary<string, OpenGraphNameSpace> _internalStore = 
-            new Dictionary<string, OpenGraphNameSpace>
-            {
-                
-            };
+        private readonly Dictionary<string, OpenGraphNameSpace> _internalStore;
 
+        public DefaultNameSpaceStore(Dictionary<string, OpenGraphNameSpace> defaultNs = null)
+        {
+            _internalStore = defaultNs
+                ?? new Dictionary<string, OpenGraphNameSpace>();
+        }
+        
         public List<OpenGraphNameSpace> GetAll()
         {
             return _internalStore

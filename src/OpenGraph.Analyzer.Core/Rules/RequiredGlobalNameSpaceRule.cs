@@ -8,6 +8,8 @@ namespace OpenGraph.Analyzer.Core.Rules
 {
     public class RequiredGlobalNameSpaceRule : AnalyzerRuleBase
     {
+        private string _attributeName = "Schema";
+        
         public override string Key => nameof(RequiredGlobalNameSpaceRule);
 
         public RequiredGlobalNameSpaceRule(IErrorDescriber errorDescriber) : base(errorDescriber)
@@ -19,7 +21,7 @@ namespace OpenGraph.Analyzer.Core.Rules
             return meta.NameSpace == null
                 ? DefaultAnalyzerRuleResult.Failed(new List<IAnalyzerRuleError>()
                 {
-                    new DefaultAnalyzerRuleError(nameof(RequiredGlobalNameSpaceRule), "RequiredGlobalNameSpaceRule")
+                    new DefaultAnalyzerRuleError(_attributeName, Key, ErrorDescriber.GetError(Key))
                 })
                 : DefaultAnalyzerRuleResult.Succeeded();
         }

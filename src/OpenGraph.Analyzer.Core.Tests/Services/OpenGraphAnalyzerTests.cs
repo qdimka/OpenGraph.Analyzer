@@ -10,7 +10,7 @@ namespace OpenGraph.Analyzer.Core.Tests.Services
 {
     public class OpenGraphAnalyzerTests
     {
-        private IOpenGraphAnalyzer _openGraphAnalyzer = 
+        private readonly IOpenGraphAnalyzer _openGraphAnalyzer = 
             new OpenGraphAnalyzer(
                 new OpenGraphParser(new DefaultNameSpaceStore()), 
                 new DefaultRuleRegistry());

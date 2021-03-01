@@ -7,11 +7,12 @@ namespace OpenGraph.Analyzer.Core.Rules.Result
     {
         protected DefaultAnalyzerRuleResult()
         {
+            Errors = new List<IAnalyzerRuleError>();
         }
         
         public List<IAnalyzerRuleError> Errors { get; private set; }
 
-        public bool Success => Errors == null || !Errors.Any();
+        public bool Success => !Errors.Any();
 
         public static DefaultAnalyzerRuleResult Failed(List<IAnalyzerRuleError> errors)
         {

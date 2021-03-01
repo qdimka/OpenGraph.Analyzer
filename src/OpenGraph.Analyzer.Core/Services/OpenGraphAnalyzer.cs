@@ -29,18 +29,16 @@ namespace OpenGraph.Analyzer.Core.Services
                 throw new InvalidOperationException();
 
             var meta = _openGraphParser.Parse(html);
-
+            
             var results = _rulesRegistry
                 .GetRules()
                 .Select(x => x.Rule(meta))
-                .ToArray()
                 .SelectMany(x => x.Errors)
-                .Select(x => (x.Key, x.Error))
                 .ToArray();
             
             return new OpenGraphResult()
             {
-                Rules = results
+                Results = null
             };
         }
     }

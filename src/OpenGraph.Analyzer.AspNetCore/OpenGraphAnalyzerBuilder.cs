@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using OpenGraph.Analyzer.Core.Common;
+using OpenGraph.Analyzer.Core.Rules;
 using OpenGraph.Analyzer.Core.Rules.Registry;
 using OpenGraph.Analyzer.Core.Rules.Result;
 using OpenGraph.Analyzer.Core.Services;
@@ -20,10 +21,23 @@ namespace OpenGraph.Analyzer.AspNetCore
         public void AddDefaultServices()
         {
             Services.AddScoped<IErrorDescriber, DefaultErrorDescriber>();
-            Services.AddScoped<INameSpaceStore, DefaultNameSpaceStore>();
-            Services.AddScoped<IRulesRegistry<IOpenGraphMetaData, IAnalyzerRuleResult>, DefaultRuleRegistry>();
+            Services.AddScoped<INameSpaceStore, DefaultNameSpaceStore>(
+                c => new DefaultNameSpaceStore(DefaultNameSpaces.NameSpaces));
+            
+            AddDefaultRulesRegistry();
+
             Services.AddScoped<IOpenGraphAnalyzer, OpenGraphAnalyzer>();
             Services.AddScoped<IOpenGraphParser, OpenGraphParser>();
+        }
+
+        public void AddDefaultRulesRegistry()
+        {
+            Services.AddScoped<IAnalyzerRule<IOpenGraphMetaData, IAnalyzerRuleResult>,
+                RequiredGlobalNameSpaceRule>();
+            Services.AddScoped<IAnalyzerRule<IOpenGraphMetaData, IAnalyzerRuleResult>,
+                RequiredAttributesRule>();
+            Services.AddScoped<IRulesRegistry<IOpenGraphMetaData, IAnalyzerRuleResult>, DefaultRuleRegistry>();
+
         }
     }
 }
